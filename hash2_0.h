@@ -1,17 +1,10 @@
-//
-// Created by dvb1r on 5/19/2025.
-//
-
-#ifndef UNTITLED_HASH2_0_H
-#define UNTITLED_HASH2_0_H
-#include <bits/stdc++.h>
-using namespace std;
 template <typename T>
 struct Hash {
     //T can be Mint or ull
     vector<T> pow, pref, suff;
     T p;
-    Hash(const string& s) {
+    template <typename T1>
+    Hash(const T1& s) {
         p = 239;
         int n = s.size();
         pow.resize(n, 1), pref.resize(n);
@@ -22,7 +15,8 @@ struct Hash {
             pref[i] = hsh;
         }
     }
-    Hash(string s, bool f) {
+    template <typename T1>
+    Hash(T1 s, bool f) {
         //f - need to fill pow, or not?
         reverse(s.begin(), s.end());
         p = 239;
@@ -37,14 +31,15 @@ struct Hash {
         }
         reverse(suff.begin(), suff.end());
     }
-    void build_debug(const string& s) {
+    template <typename T1, typename T2>
+    void build_debug(const T1& s, const T2& minimal_alphabet_element) {
         p = 10;
         int n = s.size();
         pow.resize(n, 1), pref.resize(n);
         for (int i = 1; i < n; ++i) pow[i] = pow[i-1] * p;
         T hsh = 0;
         for (int i = 0; i < n; ++i) {
-            hsh = hsh * p + (s[i] - 'a' + 1);
+            hsh = hsh * p + (s[i] - minimal_alphabet_element + 1);
             pref[i] = hsh;
         }
     }
@@ -53,5 +48,3 @@ struct Hash {
         return pref[r] - (l < 1 ? 0 : pref[l - 1] * pow[r - l + 1]);
     }
 };
-
-#endif //UNTITLED_HASH2_0_H
