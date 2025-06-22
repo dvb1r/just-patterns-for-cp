@@ -1,16 +1,7 @@
-//
-// Created by dvb1r on 11/25/2024.
-//
-
-#ifndef MODULARINT_H
-#define MODULARINT_H
-#include <bits/stdc++.h>
-const int mod = 1e9 + 7;
-
 struct Mint {
     int32_t val;
     int32_t MOD;
-    Mint(int32_t x = 0, int32_t md = 1e9 + 7) : val(x % md), MOD(md) {}
+    Mint(int64_t x = 0, int32_t md = 1e9 + 7) : val(x % md), MOD(md) {}
 
     Mint operator+(const Mint& o) const {return {(val + o.val >= MOD ? val + o.val - MOD : val + o.val), MOD};}
     Mint operator-(const Mint& o) const {return {(val - o.val < 0 ? val - o.val + MOD : val - o.val), MOD};}
@@ -38,10 +29,8 @@ struct Mint {
     Mint operator/=(const Mint& o) {*this = *this / o; return *this;}
 };
 std::istream& operator>> (std::istream& in, Mint& x) {
-    x = Mint(); in >> x.val; return in;
+    in >> x.val; return in;
 }
 std::ostream& operator<< (std::ostream& out, const Mint& x) {
     out << x.val; return out;
 }
-
-#endif //MODULARINT_H
