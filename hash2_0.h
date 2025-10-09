@@ -6,55 +6,39 @@
 #define UNTITLED_HASH2_0_H
 #include <bits/stdc++.h>
 using namespace std;
-template <typename T>
-struct Hash {
-    //T can be Mint or ull
-    vector<T> pow, pref, suff;
-    T p;
-    template <typename T1>
-    Hash(const T1& s) {
-        p = 239;
-        int n = s.size();
-        pow.resize(n, 1), pref.resize(n);
-        for (int i = 1; i < n; ++i) pow[i] = pow[i - 1] * p;
-        T hsh = 0;
+template<class С>
+struct HASH {
+    vector<С> pref, pow, suff;
+    int p = 239;
+ 
+    template <typename T>
+    HASH(T a, int n) : pref(n + 1), suff(n + 1), pow(n + 1, 1) {
         for (int i = 0; i < n; ++i) {
-            hsh = hsh * p + s[i];
-            pref[i] = hsh;
+            pow[i + 1] = pow[i] * p;
+            pref[i + 1] = pref[i] * p + a[i];
+        }
+        for (int i = n - 1; i >= 0; --i) {
+            suff[i] = suff[i + 1] * p + a[i];
         }
     }
-    template <typename T1>
-    Hash(T1 s, bool f) {
-        //f - need to fill pow, or not?
-        reverse(s.begin(), s.end());
-        p = 239;
-        int n = s.size();
-        suff.resize(n);
-        if (f) pow.resize(n, 1);
-        for (int i = 1; i < n; ++i) pow[i] = pow[i - 1] * p;
-        T hsh = 0;
-        for (int i = 0; i < n; ++i) {
-            hsh = hsh * p + s[i];
-            suff[i] = hsh;
-        }
-        reverse(suff.begin(), suff.end());
-    }
-    template <typename T1>
-    void build_debug(const T1& s) {
+ 
+    void build(string a, int n) {
         p = 10;
-        int n = s.size();
-        pow.resize(n, 1), pref.resize(n);
-        for (int i = 1; i < n; ++i) pow[i] = pow[i-1] * p;
-        T hsh = 0;
         for (int i = 0; i < n; ++i) {
-            hsh = hsh * p + (s[i] - 'a' + 1);
-            pref[i] = hsh;
+            pow[i + 1] = pow[i] * p;
+            pref[i + 1] = pref[i] * p + a[i] - 'a' + 1;
         }
+        for (int i = n - 1; i >= 0; --i) {
+            suff[i] = suff[i + 1] * p + a[i] - 'a' + 1;
+        }
+        p = 239;
     }
-    T get(int l, int r, bool f = false) {
-        if (f) return suff[l] - (r < suff.size() - 1 ? suff[r + 1] * pow[r - l + 1] : 0);
-        return pref[r] - (l < 1 ? 0 : pref[l - 1] * pow[r - l + 1]);
+ 
+    penis operator()(int l, int r) {
+        if (l > r) return suff[r] - suff[l + 1] * pow[l - r + 1];
+        return pref[r + 1] - pref[l] * pow[r - l + 1];
     }
 };
 
 #endif //UNTITLED_HASH2_0_H
+
