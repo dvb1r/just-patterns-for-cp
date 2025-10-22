@@ -34,11 +34,12 @@ struct HASH {
         p = 239;
     }
  
-    penis operator()(int l, int r) {
+    C operator()(int l, int r) {
         if (l > r) return suff[r] - suff[l + 1] * pow[l - r + 1];
         return pref[r + 1] - pref[l] * pow[r - l + 1];
     }
 };
 
 #endif //UNTITLED_HASH2_0_H
+
 
