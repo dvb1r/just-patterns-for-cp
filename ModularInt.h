@@ -14,7 +14,6 @@ T inverse(T a, T m) {
 
 struct Mint {
     int32_t val;
-//    int32_t MOD;
 
     constexpr Mint() : val(0) { }
     template <typename T>
@@ -24,8 +23,8 @@ struct Mint {
         if (val < 0) val += MOD;
     }
 
-    Mint& operator+=(const Mint& o) { (val + o.val >= MOD ? val = val + o.val - MOD : val = val + o.val); return *this; }
-    Mint& operator-=(const Mint& o) { val = val - o.val < 0 ? val - o.val + MOD : val - o.val; return *this; }
+    Mint& operator+=(const Mint& o) { val += o.val; val -= (val >= MOD) * MOD; return *this; }
+    Mint& operator-=(const Mint& o) { val -= o.val; val += (val < 0) * MOD; return *this; }
     Mint& operator*=(const Mint& o) { val = val * 1ll * o.val % MOD; return *this; }
     Mint& operator/=(const Mint& o) { *this *= inverse(o.val, MOD); return *this; }
     template <typename T> Mint& operator+=(const T& o) { return *this += Mint(o); }
@@ -37,7 +36,7 @@ struct Mint {
     Mint operator++(int) { Mint res(*this); return *this += 1; return res; }
     Mint& operator--() { return *this -= 1; }
     Mint operator--(int) { Mint res(*this); return *this -= 1; return res; }
-    Mint operator-() { return Mint(-val); }
+    Mint operator-() const { return Mint(-val); }
 };
 
 Mint operator+(const Mint& lhs, const Mint& rhs) { return Mint(lhs) += rhs; }
@@ -79,7 +78,7 @@ template<typename U> bool operator==(const U& lhs, const Mint& rhs) { return lhs
 
 template<typename U>
 Mint power(const Mint& n, const U& k) {
-    assert(k >= 0);
+//    assert(k >= 0);
     Mint x = n, res = 1;
     U p = k;
     while (p) {
